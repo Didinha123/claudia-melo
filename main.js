@@ -1,24 +1,24 @@
 // Dados de contato — troque aqui e todos os botões do site são atualizados
-const WHATSAPP = '5500000000000'; // DDI + DDD + número, só dígitos (ex.: 5511999998888)
-const INSTAGRAM = 'claudiamelo';  // usuário sem o @
+const WHATSAPP = '5528992747881'; // DDI + DDD + número, só dígitos
+const INSTAGRAM_URL = 'https://www.instagram.com/claudiamelo/';
 
 const header = document.getElementById('header');
 const nav = document.getElementById('nav');
-const toggle = document.getElementById('menuToggle');
+const burger = document.getElementById('burger');
 
-const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 30);
+const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 20);
 window.addEventListener('scroll', onScroll);
 onScroll();
 
-toggle.addEventListener('click', () => {
+burger.addEventListener('click', () => {
   nav.classList.toggle('open');
-  toggle.classList.toggle('open');
+  burger.classList.toggle('open');
 });
 
 nav.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', () => {
     nav.classList.remove('open');
-    toggle.classList.remove('open');
+    burger.classList.remove('open');
   });
 });
 
@@ -28,19 +28,21 @@ const formatarTelefone = n => {
   return m ? `(${m[1]}) ${m[2]}-${m[3]}` : n;
 };
 
+const abrirEmNovaAba = link => {
+  link.target = '_blank';
+  link.rel = 'noopener';
+};
+
 document.querySelectorAll('[data-wpp]').forEach(link => {
   link.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(link.dataset.wpp)}`;
-  link.target = '_blank';
-  link.rel = 'noopener';
-  if (link.hasAttribute('data-wpp-label')) link.textContent = formatarTelefone(WHATSAPP);
+  abrirEmNovaAba(link);
 });
+document.querySelectorAll('[data-wpp-label]').forEach(el => (el.textContent = formatarTelefone(WHATSAPP)));
 
 document.querySelectorAll('[data-insta]').forEach(link => {
-  link.href = `https://www.instagram.com/${INSTAGRAM}/`;
-  link.target = '_blank';
-  link.rel = 'noopener';
+  link.href = INSTAGRAM_URL;
+  abrirEmNovaAba(link);
 });
-document.querySelectorAll('[data-insta-user]').forEach(el => (el.textContent = `@${INSTAGRAM}`));
 
 // Animação de entrada ao rolar
 const observer = new IntersectionObserver(entries => {
